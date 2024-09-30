@@ -20,12 +20,12 @@ classifiers = [
     "Topic :: System :: Hardware :: Hardware Drivers",
 ]
 
-requires-python = ">=3.7"
+requires-python = ">=3.9"
 dependencies = [
     "click",
     "future",
     "packbits",
-    "pillow>=3.3.0",
+    "pillow>=10.0.0",
     "pyusb",
     "attrs",
 ]
@@ -50,4 +50,4 @@ skip-string-normalization = true
 
 
 [tool.setuptools.packages.find]
-where = ["brother_ql"]
+where = ["."]
