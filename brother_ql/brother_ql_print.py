@@ -12,15 +12,25 @@ from brother_ql.output_helpers import log_discovered_devices, textual_descriptio
 
 logger = logging.getLogger(__name__)
 
+
 def main():
 
     # Command line parsing...
     parser = argparse.ArgumentParser()
     parser.add_argument('--backend', choices=available_backends, help='Forces the use of a specific backend')
-    parser.add_argument('--list-printers', action='store_true', help='List the devices available with the selected --backend')
+    parser.add_argument(
+        '--list-printers', action='store_true', help='List the devices available with the selected --backend'
+    )
     parser.add_argument('--debug', action='store_true', help='Enable debugging output')
-    parser.add_argument('instruction_file', nargs='?', help='file containing the instructions to be sent to the printer')
-    parser.add_argument('printer', metavar='PRINTER_IDENTIFIER', nargs='?', help='Identifier string specifying the printer. If not specified, selects the first detected device.')
+    parser.add_argument(
+        'instruction_file', nargs='?', help='file containing the instructions to be sent to the printer'
+    )
+    parser.add_argument(
+        'printer',
+        metavar='PRINTER_IDENTIFIER',
+        nargs='?',
+        help='Identifier string specifying the printer. If not specified, selects the first detected device.',
+    )
     args = parser.parse_args()
 
     if args.list_printers and not args.backend:
@@ -45,7 +55,9 @@ def main():
 
     # State any shortcomings of this software early on.
     if args.backend == 'network':
-        logger.warning("The network backend doesn't supply any 'readback' functionality. No status reports will be received.")
+        logger.warning(
+            "The network backend doesn't supply any 'readback' functionality. No status reports will be received."
+        )
 
     # Select the backend based: Either explicitly stated or derived from identifier. Otherwise: Default.
     selected_backend = None
@@ -82,4 +94,6 @@ def main():
     # Finally, do the actual printing.
     send(instructions=content, printer_identifier=identifier, backend_identifier=selected_backend, blocking=True)
 
-if __name__ == "__main__": main()
+
+if __name__ == "__main__":
+    main()

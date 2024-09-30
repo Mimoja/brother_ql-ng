@@ -5,12 +5,14 @@ import copy
 
 from brother_ql.helpers import ElementsManager
 
+
 @attrs
 class Model(object):
     """
     This class represents a printer model. All specifics of a certain model
     and the opcodes it supports should be contained in this class.
     """
+
     #: A string identifier given to each model implemented. Eg. 'QL-500'.
     identifier = attrib(type=str)
     #: Minimum and maximum number of rows or 'dots' that can be printed.
@@ -40,24 +42,26 @@ class Model(object):
     def name(self):
         return self.identifier
 
+
 ALL_MODELS = [
-  Model('QL-500',   (295, 11811), compression=False, mode_setting=False, expanded_mode=False, cutting=False),
-  Model('QL-550',   (295, 11811), compression=False, mode_setting=False),
-  Model('QL-560',   (295, 11811), compression=False, mode_setting=False),
-  Model('QL-570',   (150, 11811), compression=False, mode_setting=False),
-  Model('QL-580N',  (150, 11811)),
-  Model('QL-650TD', (295, 11811)),
-  Model('QL-700',   (150, 11811), compression=False, mode_setting=False),
-  Model('QL-710W',  (150, 11811)),
-  Model('QL-720NW', (150, 11811)),
-  Model('QL-800',   (150, 11811), two_color=True, compression=False),
-  Model('QL-810W',  (150, 11811), two_color=True),
-  Model('QL-820NWB',(150, 11811), two_color=True),
-  Model('QL-1050',  (295, 35433), number_bytes_per_row=162, additional_offset_r=44),
-  Model('QL-1060N', (295, 35433), number_bytes_per_row=162, additional_offset_r=44),
-  Model('PT-P750W',  (31, 14172), number_bytes_per_row=16),
-  Model('PT-P900W',  (57, 28346), number_bytes_per_row=70),
+    Model('QL-500', (295, 11811), compression=False, mode_setting=False, expanded_mode=False, cutting=False),
+    Model('QL-550', (295, 11811), compression=False, mode_setting=False),
+    Model('QL-560', (295, 11811), compression=False, mode_setting=False),
+    Model('QL-570', (150, 11811), compression=False, mode_setting=False),
+    Model('QL-580N', (150, 11811)),
+    Model('QL-650TD', (295, 11811)),
+    Model('QL-700', (150, 11811), compression=False, mode_setting=False),
+    Model('QL-710W', (150, 11811)),
+    Model('QL-720NW', (150, 11811)),
+    Model('QL-800', (150, 11811), two_color=True, compression=False),
+    Model('QL-810W', (150, 11811), two_color=True),
+    Model('QL-820NWB', (150, 11811), two_color=True),
+    Model('QL-1050', (295, 35433), number_bytes_per_row=162, additional_offset_r=44),
+    Model('QL-1060N', (295, 35433), number_bytes_per_row=162, additional_offset_r=44),
+    Model('PT-P750W', (31, 14172), number_bytes_per_row=16),
+    Model('PT-P900W', (57, 28346), number_bytes_per_row=70),
 ]
+
 
 class ModelsManager(ElementsManager):
     DEFAULT_ELEMENTS = copy.copy(ALL_MODELS)

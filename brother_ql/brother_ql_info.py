@@ -2,13 +2,21 @@
 
 import argparse
 
-from brother_ql.devicedependent import models, label_sizes, label_type_specs, DIE_CUT_LABEL, ENDLESS_LABEL, ROUND_DIE_CUT_LABEL
+from brother_ql.devicedependent import (
+    models,
+    label_sizes,
+    label_type_specs,
+    DIE_CUT_LABEL,
+    ENDLESS_LABEL,
+    ROUND_DIE_CUT_LABEL,
+)
+
 
 def main():
     parser = argparse.ArgumentParser()
     subparser = parser.add_subparsers(dest='action')
     subparser.add_parser('list-label-sizes', help='List available label sizes')
-    subparser.add_parser('list-models',      help='List available models')
+    subparser.add_parser('list-models', help='List available models')
     args = parser.parse_args()
 
     if not args.action:
@@ -16,7 +24,8 @@ def main():
 
     elif args.action == 'list-models':
         print('Supported models:')
-        for model in models: print(" " + model)
+        for model in models:
+            print(" " + model)
 
     elif args.action == 'list-label-sizes':
         print('Supported label sizes:')
@@ -25,7 +34,7 @@ def main():
         for label_size in label_sizes:
             s = label_type_specs[label_size]
             if s['kind'] == DIE_CUT_LABEL:
-                label_descr = "(%d x %d mm^2)"  % s['tape_size']
+                label_descr = "(%d x %d mm^2)" % s['tape_size']
                 dots_printable = "{0:4d} x {1:4d}".format(*s['dots_printable'])
             if s['kind'] == ENDLESS_LABEL:
                 label_descr = "(%d mm endless)" % s['tape_size'][0]
@@ -35,4 +44,6 @@ def main():
                 dots_printable = "{0:4d} x {1:4d}".format(*s['dots_printable'])
             print(fmt.format(label_size=label_size, label_descr=label_descr, dots_printable=dots_printable))
 
-if __name__ == "__main__": main()
+
+if __name__ == "__main__":
+    main()

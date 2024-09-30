@@ -12,6 +12,7 @@ import socket, os, time, select
 
 from .generic import BrotherQLBackendGeneric
 
+
 def list_available_devices():
     """
     List all available devices for the network backend
@@ -24,6 +25,7 @@ def list_available_devices():
     # We need some snmp request sent to 255.255.255.255 here
     raise NotImplementedError()
     return [{'identifier': 'tcp://' + path, 'instance': None} for path in paths]
+
 
 class BrotherQLBackendNetwork(BrotherQLBackendGeneric):
     """
@@ -47,11 +49,11 @@ class BrotherQLBackendNetwork(BrotherQLBackendGeneric):
                 port = int(port)
             else:
                 port = 9100
-            #try:
+            # try:
             self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.s.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
             self.s.connect((host, port))
-            #except OSError as e:
+            # except OSError as e:
             #    raise ValueError('Could not connect to the device.')
             if self.strategy == 'socket_timeout':
                 self.s.settimeout(self.read_timeout)
@@ -63,7 +65,9 @@ class BrotherQLBackendNetwork(BrotherQLBackendGeneric):
         elif isinstance(device_specifier, int):
             self.dev = device_specifier
         else:
-            raise NotImplementedError('Currently the printer can be specified either via an appropriate string or via an os.open() handle.')
+            raise NotImplementedError(
+                'Currently the printer can be specified either via an appropriate string or via an os.open() handle.'
+            )
 
     def _write(self, data):
         self.s.settimeout(10)
@@ -90,7 +94,8 @@ class BrotherQLBackendNetwork(BrotherQLBackendGeneric):
                 result, _, _ = select.select([self.s], [], [], 0)
                 if self.s in result:
                     data += self.s.recv(length)
-                if data: break
+                if data:
+                    break
                 time.sleep(0.001)
             return data
         else:
