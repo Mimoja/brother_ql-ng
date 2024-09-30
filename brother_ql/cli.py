@@ -202,6 +202,9 @@ def print_cmd(ctx, *args, **kwargs):
     from brother_ql.backends.helpers import send
     from brother_ql.raster import BrotherQLRaster
 
+    if kwargs.get('label') is None:
+        raise click.UsageError("You need to specify a label size with --label  / -l")
+
     qlr = BrotherQLRaster(model)
     qlr.exception_on_warning = True
     kwargs['cut'] = not kwargs['no_cut']
