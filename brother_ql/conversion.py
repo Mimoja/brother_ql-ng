@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 
 from __future__ import division, unicode_literals
-from builtins import str
 
 import logging
 
 from PIL import Image
-import PIL.ImageOps, PIL.ImageChops
+import PIL.ImageOps
+import PIL.ImageChops
 
-from brother_ql.raster import BrotherQLRaster
 from brother_ql.devicedependent import ENDLESS_LABEL, DIE_CUT_LABEL, ROUND_DIE_CUT_LABEL, PTOUCH_ENDLESS_LABEL
 from brother_ql.devicedependent import label_type_specs, right_margin_addition
 from brother_ql import BrotherQLUnsupportedCmd
@@ -85,7 +84,7 @@ def convert(qlr, images, label, **kwargs):
         else:
             try:
                 im = Image.open(image)
-            except:
+            except Exception:
                 raise NotImplementedError(
                     "The image argument needs to be an Image() instance, the filename to an image, or a file handle."
                 )
@@ -135,17 +134,31 @@ def convert(qlr, images, label, **kwargs):
             im = new_im
 
         if red:
-            filter_h = lambda h: 255 if (h < 40 or h > 210) else 0
-            filter_s = lambda s: 255 if s > 100 else 0
-            filter_v = lambda v: 255 if v > 80 else 0
+
+            def filter_h(h):
+                return 255 if (h < 40 or h > 210) else 0
+
+            def filter_s(s):
+                return 255 if s > 100 else 0
+
+            def filter_v(v):
+                return 255 if v > 80 else 0
+
             red_im = filtered_hsv(im, filter_h, filter_s, filter_v)
             red_im = red_im.convert("L")
             red_im = PIL.ImageOps.invert(red_im)
             red_im = red_im.point(lambda x: 0 if x < threshold else 255, mode="1")
 
-            filter_h = lambda h: 255
-            filter_s = lambda s: 255
-            filter_v = lambda v: 255 if v < 80 else 0
+            def filter_h(h):
+                return 255
+
+            def filter_s(s):
+                return 255
+
+            def filter_v(v):
+                return 255 if v < 80 else 0
+
+            filter_v = filter_v
             black_im = filtered_hsv(im, filter_h, filter_s, filter_v)
             black_im = black_im.convert("L")
             black_im = PIL.ImageOps.invert(black_im)

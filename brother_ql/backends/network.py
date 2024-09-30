@@ -8,7 +8,9 @@ Works cross-platform.
 from __future__ import unicode_literals
 from builtins import str
 
-import socket, os, time, select
+import socket
+import time
+import select
 
 from .generic import BrotherQLBackendGeneric
 
@@ -24,7 +26,6 @@ def list_available_devices():
 
     # We need some snmp request sent to 255.255.255.255 here
     raise NotImplementedError()
-    return [{'identifier': 'tcp://' + path, 'instance': None} for path in paths]
 
 
 class BrotherQLBackendNetwork(BrotherQLBackendGeneric):

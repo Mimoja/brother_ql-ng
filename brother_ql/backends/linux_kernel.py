@@ -8,7 +8,10 @@ Works on Linux.
 from __future__ import unicode_literals
 from builtins import str
 
-import glob, os, time, select
+import glob
+import os
+import time
+import select
 
 from .generic import BrotherQLBackendGeneric
 

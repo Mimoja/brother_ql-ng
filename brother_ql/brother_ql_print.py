@@ -4,9 +4,11 @@
 Testing the packaged version of the Linux Kernel backend
 """
 
-import argparse, logging, sys
+import argparse
+import logging
+import sys
 
-from brother_ql.backends import backend_factory, guess_backend, available_backends
+from brother_ql.backends import guess_backend, available_backends
 from brother_ql.backends.helpers import discover, send
 from brother_ql.output_helpers import log_discovered_devices, textual_description_discovered_devices
 
@@ -66,7 +68,7 @@ def main():
     else:
         try:
             selected_backend = guess_backend(args.printer)
-        except:
+        except Exception:
             logger.info("No backend stated. Selecting the default linux_kernel backend.")
             selected_backend = 'linux_kernel'
 

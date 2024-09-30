@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-import sys, argparse, logging, struct, io, logging, sys, os, time
-from pprint import pprint, pformat
+import argparse
+import logging
+import time
 
 from brother_ql.reader import (
     OPCODES,
@@ -54,11 +55,12 @@ class BrotherQL_USBdebug(object):
         try:
             interp_result = interpret_response(data)
             logger.info(
-                "Interpretation of the response: '{status_type}' (phase: {phase_type}), '{media_type}' {media_width}x{media_length} mm^2, errors: {errors}".format(
-                    **interp_result
-                )
+                (
+                    "Interpretation of the response: '{status_type}' "
+                    "(phase: {phase_type}), '{media_type}' {media_width}x{media_length} mm^2, errors: {errors}"
+                ).format(**interp_result)
             )
-        except:
+        except Exception:
             logger.error("Couln't interpret response: %s", hex_format(data))
 
     def print_and_debug(self):

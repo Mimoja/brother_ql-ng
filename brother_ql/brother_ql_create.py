@@ -1,14 +1,17 @@
 #!/usr/bin/env python
 
-import sys, argparse, logging
+import sys
+import argparse
+import logging
 
 from brother_ql.raster import BrotherQLRaster
 from brother_ql.conversion import convert
 from brother_ql.devicedependent import label_type_specs
+from brother_ql.exceptions import BrotherQLUnknownModel
 
 try:
     stdout = sys.stdout.buffer
-except:
+except Exception:
     stdout = sys.stdout
 
 logger = logging.getLogger(__name__)
@@ -65,13 +68,16 @@ def main():
     parser.add_argument(
         '--red',
         action='store_true',
-        help='Create a label to be printed on black/red/white tape (only with QL-8xx series on DK-22251 labels). You must use this option when printing on black/red tape, even when not printing red.',
+        help='Create a label to be printed on black/red/white tape '
+        '(only with QL-8xx series on DK-22251 labels). '
+        'You must use this option when printing on black/red tape, even when not printing red.',
     )
     parser.add_argument(
         '--600dpi',
         action='store_true',
         dest='dpi_600',
-        help='Print with 600x300 dpi available on some models. Provide your image as 600x600 dpi; perpendicular to the feeding the image will be resized to 300dpi.',
+        help='Print with 600x300 dpi available on some models. '
+        'Provide your image as 600x600 dpi; perpendicular to the feeding the image will be resized to 300dpi.',
     )
     parser.add_argument(
         '--lq', action='store_false', dest='hq', help='Print with low quality (faster). Default is high quality.'

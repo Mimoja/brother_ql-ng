@@ -12,7 +12,7 @@ from __future__ import unicode_literals
 from builtins import str, bytes
 
 import time
-
+import select
 import usb.core
 import usb.util
 
@@ -51,7 +51,7 @@ def list_available_devices():
         try:
             serial = usb.util.get_string(dev, 256, dev.iSerialNumber)
             return 'usb://0x{:04x}:0x{:04x}_{}'.format(dev.idVendor, dev.idProduct, serial)
-        except:
+        except Exception:
             return 'usb://0x{:04x}:0x{:04x}'.format(dev.idVendor, dev.idProduct)
 
     return [{'identifier': identifier(printer), 'instance': printer} for printer in printers]
@@ -94,7 +94,8 @@ class BrotherQLBackendPyUSB(BrotherQLBackendGeneric):
             self.dev = device_specifier
         else:
             raise NotImplementedError(
-                'Currently the printer can be specified either via an appropriate string or via a usb.core.Device instance.'
+                'Currently the printer can be specified either via an appropriate '
+                'string or via a usb.core.Device instance.'
             )
 
         # Now we are sure to have self.dev around, start using it:
@@ -113,8 +114,13 @@ class BrotherQLBackendPyUSB(BrotherQLBackendGeneric):
         intf = usb.util.find_descriptor(cfg, bInterfaceClass=7)
         assert intf is not None
 
-        ep_match_in = lambda e: usb.util.endpoint_direction(e.bEndpointAddress) == usb.util.ENDPOINT_IN
-        ep_match_out = lambda e: usb.util.endpoint_direction(e.bEndpointAddress) == usb.util.ENDPOINT_OUT
+        def ep_match_in(e):
+            return usb.util.endpoint_direction(e.bEndpointAddress) == usb.util.ENDPOINT_IN
+
+        def ep_match_out(e):
+            return usb.util.endpoint_direction(e.bEndpointAddress) == usb.util.ENDPOINT_OUT
+
+        ep_match_out = ep_match_out
 
         ep_in = usb.util.find_descriptor(intf, custom_match=ep_match_in)
         ep_out = usb.util.find_descriptor(intf, custom_match=ep_match_out)

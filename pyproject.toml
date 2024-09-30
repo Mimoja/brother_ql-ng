@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=42", "wheel"]
+requires = ["setuptools>=42", "wheel", "flake8", "black"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "brother_ql"
-version = "0.9.dev0"
+version = "1.0.0.dev0"
 description = "Python package to talk to Brother QL label printers"
 readme = "README.md"
 authors = [{ name = "Philipp Klaus", email = "philipp.l.klaus@web.de" }]
@@ -20,6 +20,7 @@ classifiers = [
     "Topic :: System :: Hardware :: Hardware Drivers",
 ]
 
+requires-python = ">=3.7"
 dependencies = [
     "click",
     "future",
@@ -27,12 +28,10 @@ dependencies = [
     "pillow>=3.3.0",
     "pyusb",
     "attrs",
-    'typing; python_version < "3.5"',
-    'enum34; python_version < "3.4"',
 ]
 
 [project.optional-dependencies]
-# Add optional dependencies if needed, for example, `matplotlib`
+# Carry over from original setup.py
 # brother_ql_analyse = ["matplotlib"]
 # brother_ql_create = ["matplotlib"]
 

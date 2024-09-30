@@ -3,7 +3,6 @@
 import struct
 import io
 import logging
-import sys
 
 from PIL import Image
 from PIL.ImageOps import colorize
@@ -133,7 +132,7 @@ def chunker(data, raise_exception=False):
             break
         try:
             opcode = match_opcode(data)
-        except:
+        except Exception:
             msg = 'unknown opcode starting with {}...)'.format(hex_format(data[0:4]))
             if raise_exception:
                 raise ValueError(msg)

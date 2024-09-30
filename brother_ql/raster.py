@@ -7,33 +7,24 @@ The central piece of code in this module is the class
 :py:class:`BrotherQLRaster`.
 """
 
-from builtins import bytes
-
-import struct
 import logging
+import struct
+from builtins import bytes
+from io import BytesIO
 
 import packbits
 from PIL import Image
-import io
 
+from . import BrotherQLRasterError, BrotherQLUnknownModel, BrotherQLUnsupportedCmd
 from .devicedependent import (
-    models,
-    min_max_feed,
-    min_max_length_dots,
-    number_bytes_per_row,
     compressionsupport,
     cuttingsupport,
     expandedmode,
-    two_color_support,
+    models,
     modesetting,
+    number_bytes_per_row,
+    two_color_support,
 )
-
-from . import BrotherQLError, BrotherQLUnsupportedCmd, BrotherQLUnknownModel, BrotherQLRasterError
-
-try:
-    from io import BytesIO
-except:  # Py2
-    from cStringIO import StringIO as BytesIO
 
 logger = logging.getLogger(__name__)
 
@@ -51,7 +42,9 @@ class BrotherQLRaster(object):
     :param str model: Choose from the list of available models.
 
     :ivar bytes data: The resulting bytecode with all instructions.
-    :ivar bool exception_on_warning: If set to True, an exception is raised if trying to add instruction which are not supported on the selected model. If set to False, the instruction is simply ignored and a warning sent to logging/stderr.
+    :ivar bool exception_on_warning: If set to True, an exception is raised if trying to add
+               instruction which are not supported on the selected model. If set to False,
+               the instruction is simply ignored and a warning sent to logging/stderr.
     """
 
     def __init__(self, model='QL-500'):
@@ -216,7 +209,7 @@ class BrotherQLRaster(object):
     def get_pixel_width(self):
         try:
             nbpr = number_bytes_per_row[self.model]
-        except:
+        except Exception:
             nbpr = number_bytes_per_row['default']
         return nbpr * 8
 
@@ -227,7 +220,8 @@ class BrotherQLRaster(object):
         is either black or white).
 
         :param PIL.Image.Image image: The image to be converted and added to the raster instructions
-        :param PIL.Image.Image second_image: A second image with a separate color layer (red layer for the QL-800 series)
+        :param PIL.Image.Image second_image: A second image with a separate color layer
+        (red layer for the QL-800 series)
         """
         logger.debug("raster_image_size: {0}x{1}".format(*image.size))
         if image.size[0] != self.get_pixel_width():

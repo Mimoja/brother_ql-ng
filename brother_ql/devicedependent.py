@@ -16,7 +16,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-## These module level variables were available here before.
+# These module level variables were available here before.
 # Concerning labels
 DIE_CUT_LABEL = None
 ENDLESS_LABEL = None
@@ -36,8 +36,8 @@ expandedmode = []
 compressionsupport = []
 two_color_support = []
 
-## Let's recreate them using the improved data structures
-## in brother_ql.models and brother_ql.labels
+# Let's recreate them using the improved data structures
+# in brother_ql.models and brother_ql.labels
 
 
 def _populate_model_legacy_structures():
@@ -85,17 +85,17 @@ def _populate_label_legacy_structures():
     lm = LabelsManager()
     label_sizes = list(lm.iter_identifiers())
     for label in lm.iter_elements():
-        l = {}
-        l['name'] = label.name
-        l['kind'] = label.form_factor
-        l['color'] = label.color
-        l['tape_size'] = label.tape_size
-        l['dots_total'] = label.dots_total
-        l['dots_printable'] = label.dots_printable
-        l['right_margin_dots'] = label.offset_r
-        l['feed_margin'] = label.feed_margin
-        l['restrict_printers'] = label.restricted_to_models
-        label_type_specs[label.identifier] = l
+        label_definition = {}
+        label_definition['name'] = label.name
+        label_definition['kind'] = label.form_factor
+        label_definition['color'] = label.color
+        label_definition['tape_size'] = label.tape_size
+        label_definition['dots_total'] = label.dots_total
+        label_definition['dots_printable'] = label.dots_printable
+        label_definition['right_margin_dots'] = label.offset_r
+        label_definition['feed_margin'] = label.feed_margin
+        label_definition['restrict_printers'] = label.restricted_to_models
+        label_type_specs[label.identifier] = label_definition
 
 
 def _populate_all_legacy_structures():

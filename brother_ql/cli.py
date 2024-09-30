@@ -8,21 +8,17 @@ import logging
 import click
 
 # imports from this very package
-from brother_ql.devicedependent import (
-    models,
-    label_sizes,
-    label_type_specs,
-    DIE_CUT_LABEL,
-    ENDLESS_LABEL,
-    ROUND_DIE_CUT_LABEL,
-)
-from brother_ql.backends import available_backends, backend_factory
+from brother_ql.devicedependent import models, label_sizes
+from brother_ql.backends import available_backends
 
 
 logger = logging.getLogger('brother_ql')
 
 
-printer_help = "The identifier for the printer. This could be a string like tcp://192.168.1.21:9100 for a networked printer or usb://0x04f9:0x2015/000M6Z401370 for a printer connected via USB."
+printer_help = (
+    "The identifier for the printer. This could be a string like tcp://192.168.1.21:9100 for a networked printer "
+    "or usb://0x04f9:0x2015/000M6Z401370 for a printer connected via USB."
+)
 
 
 @click.group()
@@ -101,8 +97,10 @@ def env(ctx, *args, **kwargs):
     """
     print debug info about running environment
     """
-    import sys, platform, os, shutil
-    from pkg_resources import get_distribution, working_set
+    import sys
+    import platform
+    import shutil
+    from pkg_resources import get_distribution
 
     print("\n##################\n")
     print("Information about the running environment of brother_ql.")
@@ -122,7 +120,7 @@ def env(ctx, *args, **kwargs):
     print("  * package version: ", pkg.version)
     try:
         cli_loc = shutil.which('brother_ql')
-    except:
+    except Exception:
         cli_loc = 'unknown'
     print("  * brother_ql CLI path:", cli_loc)
     # brother_ql's requirements
@@ -147,7 +145,8 @@ def env(ctx, *args, **kwargs):
     '--label',
     type=click.Choice(label_sizes),
     envvar='BROTHER_QL_LABEL',
-    help='The label (size, type - die-cut or endless). Run `brother_ql info labels` for a full list including ideal pixel dimensions.',
+    help='The label (size, type - die-cut or endless). '
+    'Run `brother_ql info labels` for a full list including ideal pixel dimensions.',
 )
 @click.option(
     '-r',
@@ -173,18 +172,23 @@ def env(ctx, *args, **kwargs):
     '-c',
     '--compress',
     is_flag=True,
-    help='Enable compression (if available with the model). Label creation can take slightly longer but the resulting instruction size is normally considerably smaller.',
+    help='Enable compression (if available with the model). '
+    'Label creation can take slightly longer but the resulting '
+    'instruction size is normally considerably smaller.',
 )
 @click.option(
     '--red',
     is_flag=True,
-    help='Create a label to be printed on black/red/white tape (only with QL-8xx series on DK-22251 labels). You must use this option when printing on black/red tape, even when not printing red.',
+    help='Create a label to be printed on black/red/white tape '
+    '(only with QL-8xx series on DK-22251 labels). '
+    'You must use this option when printing on black/red tape, even when not printing red.',
 )
 @click.option(
     '--600dpi',
     'dpi_600',
     is_flag=True,
-    help='Print with 600x300 dpi available on some models. Provide your image as 600x600 dpi; perpendicular to the feeding the image will be resized to 300dpi.',
+    help='Print with 600x300 dpi available on some models. '
+    'Provide your image as 600x600 dpi; perpendicular to the feeding the image will be resized to 300dpi.',
 )
 @click.option('--lq', is_flag=True, help='Print with low quality (faster). Default is high quality.')
 @click.option('--no-cut', is_flag=True, help="Don't cut the tape after printing the label.")
