@@ -3,11 +3,14 @@ requires = ["setuptools>=42", "wheel", "flake8", "black"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "brother_ql"
+name = "brother_ql-ng"
 version = "1.0.0.dev0"
 description = "Python package to talk to Brother QL label printers"
 readme = "README.md"
-authors = [{ name = "Philipp Klaus", email = "philipp.l.klaus@web.de" }]
+authors = [
+    { name = "Mimoja", email = "git@mimoja.de" },
+    { name = "Philipp Klaus", email = "philipp.l.klaus@web.de" }
+]
 license = { text = "GPL-3.0-or-later" }
 keywords = ["Brother", "QL-500", "QL-550", "QL-560", "QL-570", "QL-700", "QL-710W", "QL-720NW", "QL-800", "QL-810W", "QL-820NWB", "QL-1050", "QL-1060N"]
 classifiers = [
