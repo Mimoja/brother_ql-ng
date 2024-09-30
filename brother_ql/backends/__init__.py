@@ -1,5 +1,6 @@
 from .generic import BrotherQLBackendGeneric
 
+__all__ = ['BrotherQLBackendGeneric']
 
 available_backends = [
     'pyusb',
